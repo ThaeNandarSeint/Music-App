@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/core/theme/app_pallete.dart';
+import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:music_app/features/auth/view/widgets/auth_button.dart';
 import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
 
@@ -50,7 +51,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 isObscureText: true,
               ),
               const SizedBox(height: 20),
-              AuthButton(buttonText: "Sign Up", onTap: () {}),
+              AuthButton(
+                buttonText: "Sign Up",
+                onTap: () async {
+                  await AuthRemoteRepository().register(
+                    name: nameController.text,
+                    email: emailController.text,
+                    password: passwordController.text,
+                  );
+                },
+              ),
               const SizedBox(height: 20),
               RichText(
                 text: TextSpan(
