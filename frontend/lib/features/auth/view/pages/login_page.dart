@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/core/theme/app_pallete.dart';
-import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
+import 'package:music_app/features/auth/services/auth_service.dart';
 import 'package:music_app/features/auth/view/pages/register_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_button.dart';
 import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
@@ -51,9 +51,19 @@ class _LoginPageState extends State<LoginPage> {
               AuthButton(
                 buttonText: "Sign In",
                 onTap: () async {
-                  await AuthRemoteRepository().login(
+                  final res = await AuthRemoteRepository().login(
                     email: emailController.text,
                     password: passwordController.text,
+                  );
+                  res.fold(
+                    (error) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                    },
+                    (authResponse) {
+                      print('Login successful: ${authResponse.user.name}');
+                    },
                   );
                 },
               ),
