@@ -4,8 +4,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:music_app/core/models/error_response.dart';
 import 'package:music_app/features/auth/model/auth_response.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AuthRemoteRepository {
+part 'auth_service.g.dart';
+
+@riverpod
+AuthService authService(Ref ref) => AuthService();
+
+class AuthService {
   Future<Either<ErrorResponse, AuthResponse>> register({
     required String name,
     required String email,
