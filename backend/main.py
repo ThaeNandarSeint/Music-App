@@ -1,0 +1,57 @@
+from fastapi import FastAPI, Request, APIRouter
+from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from fastapi.exceptions import RequestValidationError 
+from controllers import auth_controller, user_controller
+from middlewares.auth_middleware import AuthMiddleware
+from database import Base, engine
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
+    if exc.status_code == 404:
+        return JSONResponse(
+            status_code=404,
+            content={
+                "message": f"Cannot {request.method} {request.url.path}",
+                "error": "Not Found",
+                "status_code": 404
+            }
+        )
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "message": exc.detail,
+            "status_code": exc.status_code
+        }
+    )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    errors = exc.errors()
+    messages = []
+    for err in errors:
+        loc = err.get("loc", [])
+        field = loc[-1] if loc else "field"
+        msg = err.get("msg", "")
+        messages.append(f"{field}: {msg}")
+
+    return JSONResponse(
+        status_code=400,
+        content={
+            "message": messages,
+            "error": "Bad Request",
+            "statusCode": 400
+        }
+    )
+
+app.add_middleware(AuthMiddleware)
+
+api_router = APIRouter(prefix="/api")
+api_router.include_router(auth_controller.router)
+api_router.include_router(user_controller.router)
+
+app.include_router(api_router)
