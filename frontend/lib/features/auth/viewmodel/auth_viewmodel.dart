@@ -1,5 +1,6 @@
 import 'package:music_app/features/auth/model/auth_response.dart';
 import 'package:music_app/features/auth/services/auth_service.dart';
+import 'package:music_app/features/auth/services/local_storage_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_viewmodel.g.dart';
@@ -7,11 +8,17 @@ part 'auth_viewmodel.g.dart';
 @riverpod
 class AuthViewmodel extends _$AuthViewmodel {
   late AuthService _authService;
+  late LocalStorageService _localStorageService;
 
   @override
   AsyncValue<AuthResponse>? build() {
     _authService = ref.watch(authServiceProvider);
+    _localStorageService = ref.watch(localStorageServiceProvider);
     return null;
+  }
+
+  Future<void> initSharedPreferences() async {
+    await _localStorageService.init();
   }
 
   Future<void> register({
@@ -32,6 +39,7 @@ class AuthViewmodel extends _$AuthViewmodel {
       },
       (data) {
         state = AsyncValue.data(data);
+        _localStorageService.setToken(data.token);
       },
     );
   }
@@ -46,6 +54,7 @@ class AuthViewmodel extends _$AuthViewmodel {
       },
       (data) {
         state = AsyncValue.data(data);
+        _localStorageService.setToken(data.token);
       },
     );
   }

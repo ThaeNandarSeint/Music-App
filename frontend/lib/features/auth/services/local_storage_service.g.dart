@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_viewmodel.dart';
+part of 'local_storage_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViewmodelHash() => r'b99e90e7cdf4a2c6d1ed29208f0e50aad3182518';
+String _$localStorageServiceHash() =>
+    r'3a066f74fa56a1945f5c9fec939cf33617419eb2';
 
-/// See also [AuthViewmodel].
-@ProviderFor(AuthViewmodel)
-final authViewmodelProvider =
-    AutoDisposeNotifierProvider<
-      AuthViewmodel,
-      AsyncValue<AuthResponse>?
-    >.internal(
-      AuthViewmodel.new,
-      name: r'authViewmodelProvider',
+/// See also [localStorageService].
+@ProviderFor(localStorageService)
+final localStorageServiceProvider =
+    AutoDisposeProvider<LocalStorageService>.internal(
+      localStorageService,
+      name: r'localStorageServiceProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$authViewmodelHash,
+          : _$localStorageServiceHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$AuthViewmodel = AutoDisposeNotifier<AsyncValue<AuthResponse>?>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef LocalStorageServiceRef = AutoDisposeProviderRef<LocalStorageService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
