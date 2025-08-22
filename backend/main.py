@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, APIRouter
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.exceptions import RequestValidationError 
-from controllers import auth_controller, user_controller
+from controllers import auth_controller, user_controller, song_controller
 from middlewares.auth_middleware import AuthMiddleware
 from database import Base, engine
 
@@ -53,5 +53,6 @@ app.add_middleware(AuthMiddleware)
 api_router = APIRouter(prefix="/api")
 api_router.include_router(auth_controller.router)
 api_router.include_router(user_controller.router)
+api_router.include_router(song_controller.router)
 
 app.include_router(api_router)
