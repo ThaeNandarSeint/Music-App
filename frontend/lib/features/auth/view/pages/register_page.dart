@@ -7,6 +7,7 @@ import 'package:music_app/features/auth/view/pages/login_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_button.dart';
 import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
 import 'package:music_app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:music_app/features/home/view/home_page.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -31,15 +32,18 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authViewmodelProvider)?.isLoading ?? false;
+    final isLoading = ref.watch(
+      authViewmodelProvider.select((value) => value?.isLoading == true),
+    );
 
     ref.listen(authViewmodelProvider, (_, next) {
       next?.when(
         data: (data) {
           showSnackBar(context, 'Registration successful');
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (ctx) => const LoginPage()),
+            MaterialPageRoute(builder: (ctx) => const HomePage()),
+            (_) => false,
           );
         },
         error: (error, stackTrace) {

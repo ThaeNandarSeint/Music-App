@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 part 'local_storage_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 LocalStorageService localStorageService(Ref ref) => LocalStorageService();
 
 class LocalStorageService {
@@ -16,11 +16,11 @@ class LocalStorageService {
 
   void setToken(String? token) {
     if (token != null) {
-      _sharedPreferences?.setString('x-auth-token', token);
+      _sharedPreferences?.setString('access-token', token);
     }
   }
 
   String? getToken() {
-    return _sharedPreferences?.getString('x-auth-token');
+    return _sharedPreferences?.getString('access-token');
   }
 }

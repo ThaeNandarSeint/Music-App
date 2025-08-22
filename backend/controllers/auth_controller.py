@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends
-from schemas.auth_schema import Login, LoginResponse, Register, RegisterResponse
+from fastapi import APIRouter, Depends, Request
+from schemas.auth_schema import Login, LoginResponse, Register, RegisterResponse, GetCurrentUserResponse
 from usecases.auth_usecase import AuthUseCase
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -14,3 +14,7 @@ def register_user(data: Register, auth_usecase: AuthUseCase = Depends(get_usecas
 @router.post("/login", response_model=LoginResponse)
 def register_user(data: Login, auth_usecase: AuthUseCase = Depends(get_usecase)):
     return auth_usecase.login(data)
+
+@router.get("/me")
+def get_current_user(request: Request):
+    return {"user": request.state.user}

@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/utils/toast.dart';
 import 'package:music_app/core/widgets/loader.dart';
-import 'package:music_app/features/auth/view/pages/register_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_button.dart';
 import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
 import 'package:music_app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:music_app/features/home/view/home_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -29,7 +29,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authViewmodelProvider)?.isLoading ?? false;
+    final isLoading = ref.watch(
+      authViewmodelProvider.select((value) => value?.isLoading == true),
+    );
 
     ref.listen(authViewmodelProvider, (_, next) {
       next?.when(
@@ -87,17 +89,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 email: emailController.text,
                                 password: passwordController.text,
                               );
+                        } else {
+                          showSnackBar(context, 'Please fill all fields');
                         }
                       },
                     ),
                     const SizedBox(height: 20),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const RegisterPage(),
-                          ),
+                          MaterialPageRoute(builder: (ctx) => const HomePage()),
+                          (_) => false,
                         );
                       },
                       child: RichText(

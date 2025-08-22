@@ -2,6 +2,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from services.jwt_service import JWTService
+from services.user_service import UserService
 
 PUBLIC_ROUTES = ["/api/auth/register", "/api/auth/login"]
 
@@ -22,9 +23,19 @@ class AuthMiddleware(BaseHTTPMiddleware):
         token = auth_header.split(" ")[1]
 
         try:
-            user = JWTService.verify_token(token)
+            data = JWTService.verify_token(token)
+
+            user_service = UserService()
+            user = user_service.get_user(id=data["user_id"])
+            if not user:
+                return JSONResponse(
+                    status_code=401,
+                    content={"status_code": 401, "message": "Unauthorized"},
+                )
+            
             request.state.user = user
         except Exception as e:
+            print(f"Token verification failed: {e}")
             return JSONResponse(
                 status_code=401,
                 content={"status_code": 401, "message": "Unauthorized"},

@@ -15,3 +15,6 @@ class Register(BaseUser):
 class RegisterResponse(BaseModel):
     token: str
     user: User
+
+class GetCurrentUserResponse(BaseModel):
+    user: User
