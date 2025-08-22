@@ -5,9 +5,9 @@ import 'package:music_app/core/utils/toast.dart';
 import 'package:music_app/core/widgets/loader.dart';
 import 'package:music_app/features/auth/view/pages/login_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_button.dart';
-import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
+import 'package:music_app/core/widgets/custom_text_field.dart';
 import 'package:music_app/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:music_app/features/home/view/home_page.dart';
+import 'package:music_app/features/home/view/pages/home_page.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});

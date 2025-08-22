@@ -4,17 +4,23 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.hintText,
-    required this.controller,
+    this.controller,
     this.isObscureText = false,
+    this.isReadOnly = false,
+    this.onTap,
   });
 
   final String hintText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool isObscureText;
+  final bool isReadOnly;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: onTap,
+      readOnly: isReadOnly,
       decoration: InputDecoration(hintText: hintText),
       controller: controller,
       obscureText: isObscureText,
