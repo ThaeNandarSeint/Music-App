@@ -1,6 +1,5 @@
 from database import SessionLocal
 from models.song_model import Song
-from sqlalchemy.orm import joinedload
 from schemas.song_schema import CreateSong, GetSongsDto, UpdateSong
 
 class SongRepository:
@@ -23,8 +22,8 @@ class SongRepository:
             "count": count
         }
 
-    def get_by_id(self, song_id: int):
-        return self.db.query(Song).filter(Song.id == song_id).first()
+    def get_by_id(self, id: int):
+        return self.db.query(Song).filter(Song.id == id).first()
     
     def find_one(self, field: str, value):
         model_field = getattr(Song, field, None)
@@ -33,25 +32,25 @@ class SongRepository:
         
         return self.db.query(Song).filter(model_field == value).first()
 
-    def create(self, Song: CreateSong):
-        db_Song = Song(**Song)
-        self.db.add(db_Song)
+    def create(self, data: CreateSong):
+        db_data = Song(**data)
+        self.db.add(db_data)
         self.db.commit()
-        self.db.refresh(db_Song)
-        return db_Song
+        self.db.refresh(db_data)
+        return db_data
 
-    def update(self, song_id: int, Song: UpdateSong):
-        db_Song = self.get_by_id(song_id)
-        if db_Song:
-            db_Song.name = Song.name
-            db_Song.email = Song.email
+    def update(self, id: int, data: UpdateSong):
+        db_data = self.get_by_id(id)
+        if db_data:
+            db_data.name = data.name
+            db_data.email = data.email
             self.db.commit()
-            self.db.refresh(db_Song)
-        return db_Song
+            self.db.refresh(db_data)
+        return db_data
 
     def delete(self, song_id: int):
-        db_Song = self.get_by_id(song_id)
-        if db_Song:
-            self.db.delete(db_Song)
+        db_song = self.get_by_id(song_id)
+        if db_song:
+            self.db.delete(db_song)
             self.db.commit()
-        return db_Song
+        return db_song

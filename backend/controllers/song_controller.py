@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query 
+from fastapi import APIRouter, Depends, Query, UploadFile, File
 from typing import Optional
 from schemas.song_schema import CreateSong, GetSongsDto, GetSongsResponse, UpdateSong, Song
 from usecases.song_usecase import SongUseCase
@@ -23,9 +23,14 @@ def get_songs(queries: GetSongsDto = Depends(get_queries),usecase: SongUseCase =
 def get_song(id: int, usecase: SongUseCase = Depends(get_usecase)):
     return usecase.get_song_by_id(id)
 
-@router.post("/", response_model=Song)
-def create_song(data: CreateSong, usecase: SongUseCase = Depends(get_usecase)):
-    return usecase.create_song(data)
+@router.post("/")
+async def create_song(
+    data: CreateSong = Depends(CreateSong.as_form),
+    thumbnail: UploadFile = File(...),
+    audio: UploadFile = File(...),
+    usecase: SongUseCase = Depends(get_usecase)
+):
+    return await usecase.create_song(data, thumbnail, audio)
 
 @router.patch("/{id}", response_model=Song)
 def update_song(id: int, data: UpdateSong, usecase: SongUseCase = Depends(get_usecase)):

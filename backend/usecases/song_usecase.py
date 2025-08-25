@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
 from services.song_service import SongService
 from schemas.song_schema import CreateSong, GetSongsDto, UpdateSong
 
@@ -15,8 +15,8 @@ class SongUseCase:
             raise HTTPException(status_code=400, detail="Song not found")
         return data
 
-    def create_song(self, data: CreateSong):
-        return self.service.create_song(data)
+    def create_song(self, data: CreateSong, thumbnail: UploadFile, audio: UploadFile):
+        return self.service.create_song(data, thumbnail, audio)
 
     def update_song(self, id: int, data: UpdateSong):
         return self.service.update_song(id, data)

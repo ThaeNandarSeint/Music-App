@@ -1,13 +1,29 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from fastapi import Form
 
 class BaseSong(BaseModel):
     name: str
     artist: str
     color: str
 
+
 class CreateSong(BaseSong):
     pass
+
+    @classmethod
+    def as_form(
+        cls,
+        name: str = Form(...),
+        artist: str = Form(...),
+        color: str = Form(...),
+    ):
+        return cls(
+                name=name, 
+                artist=artist,
+                color=color,
+                )
+
 
 class UpdateSong(BaseSong):
     pass
