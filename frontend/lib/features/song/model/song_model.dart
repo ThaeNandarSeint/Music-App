@@ -35,6 +35,37 @@ class SongModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'artist': artist};
+    return {
+      'id': id,
+      'name': name,
+      'artist': artist,
+      'color': color,
+      'audio_url': audio_url,
+      'audio_public_id': audio_public_id,
+      'thumbnail_url': thumbnail_url,
+      'thumbnail_public_id': thumbnail_public_id,
+    };
+  }
+
+  SongModel copyWith({
+    int? id,
+    String? name,
+    String? artist,
+    String? color,
+    String? audio_url,
+    String? audio_public_id,
+    String? thumbnail_url,
+    String? thumbnail_public_id,
+  }) {
+    return SongModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      artist: artist ?? this.artist,
+      color: color ?? this.color,
+      audio_url: audio_url ?? this.audio_url,
+      audio_public_id: audio_public_id ?? this.audio_public_id,
+      thumbnail_url: thumbnail_url ?? this.thumbnail_url,
+      thumbnail_public_id: thumbnail_public_id ?? this.thumbnail_public_id,
+    );
   }
 }
