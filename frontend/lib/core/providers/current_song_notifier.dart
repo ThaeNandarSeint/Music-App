@@ -17,7 +17,7 @@ class CurrentSongNotifier extends _$CurrentSongNotifier {
     audioPlayer = AudioPlayer();
     // await audioPlayer!.setUrl(data.audio_url);
     final audioSource = AudioSource.uri(Uri.parse(data.audio_url));
-    audioPlayer!.setAudioSource(audioSource);
+    await audioPlayer!.setAudioSource(audioSource);
 
     audioPlayer!.play();
     state = data;
