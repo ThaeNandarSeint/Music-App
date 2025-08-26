@@ -6,6 +6,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:music_app/core/models/error_response.dart';
+import 'package:music_app/features/song/model/get_songs_response.dart';
 import 'package:music_app/features/song/model/song_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -46,6 +47,30 @@ class SongService {
       return Right(SongModel.fromJson(data));
     } catch (e) {
       return Left(ErrorResponse(message: 'Uploading Song failed'));
+    }
+  }
+
+  Future<Either<ErrorResponse, GetSongsResponse>> getAllSongs({
+    required String token,
+  }) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${dotenv.env['API_URL']}/songs'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        return Left(
+          ErrorResponse(message: data['message'] ?? 'Failed to fetch profile'),
+        );
+      }
+      return Right(GetSongsResponse.fromJson(data));
+    } catch (e) {
+      return Left(ErrorResponse(message: 'Fetching Songs failed'));
     }
   }
 }

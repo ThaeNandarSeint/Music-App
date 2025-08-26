@@ -2,12 +2,27 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/core/utils/color.dart';
 import 'package:music_app/features/auth/services/local_storage_service.dart';
+import 'package:music_app/features/song/model/get_songs_response.dart';
 import 'package:music_app/features/song/model/song_model.dart';
 import 'package:music_app/features/song/services/song_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:fpdart/fpdart.dart';
+
 part 'song_viewmodel.g.dart';
+
+@riverpod
+Future<GetSongsResponse?> getAllSongs(Ref ref) async {
+  final token = ref.watch(localStorageServiceProvider).getToken() ?? "";
+  final res = await ref.watch(songServiceProvider).getAllSongs(token: token);
+
+  return switch (res) {
+    Left(value: final l) => throw l.message,
+    Right(value: final r) => r,
+  };
+}
 
 @riverpod
 class SongViewModel extends _$SongViewModel {
@@ -48,11 +63,10 @@ class SongViewModel extends _$SongViewModel {
         data = null;
       },
       (result) {
-        data = result.data;
         AsyncValue.data(result.data);
+        data = result.data;
       },
     );
-
     return data;
   }
 }

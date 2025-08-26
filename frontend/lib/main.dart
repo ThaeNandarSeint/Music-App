@@ -6,7 +6,6 @@ import 'package:music_app/features/auth/view/pages/login_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:music_app/features/home/view/pages/home_page.dart';
-import 'package:music_app/features/song/view/pages/upload_song_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +32,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Music App',
       theme: AppTheme.dartThemeMode,
-      home: currentUser == null ? const LoginPage() : const UploadSongPage(),
+      home: currentUser == null ? const LoginPage() : const HomePage(),
     );
   }
 }
