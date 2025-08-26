@@ -99,6 +99,15 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                 email: emailController.text,
                                 password: passwordController.text,
                               );
+
+                          Navigator.pushAndRemoveUntil(
+                            // ignore: use_build_context_synchronously
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const HomePage(),
+                            ),
+                            (_) => false,
+                          );
                         }
                       },
                     ),

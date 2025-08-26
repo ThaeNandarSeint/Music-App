@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/utils/toast.dart';
 import 'package:music_app/core/widgets/loader.dart';
+import 'package:music_app/features/auth/view/pages/register_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_button.dart';
 import 'package:music_app/core/widgets/custom_text_field.dart';
 import 'package:music_app/features/auth/viewmodel/auth_viewmodel.dart';
@@ -89,6 +90,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 email: emailController.text,
                                 password: passwordController.text,
                               );
+
+                          Navigator.pushAndRemoveUntil(
+                            // ignore: use_build_context_synchronously
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const HomePage(),
+                            ),
+                            (_) => false,
+                          );
                         } else {
                           showSnackBar(context, 'Please fill all fields');
                         }
@@ -97,10 +107,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const SizedBox(height: 20),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushAndRemoveUntil(
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (ctx) => const HomePage()),
-                          (_) => false,
+                          MaterialPageRoute(
+                            builder: (ctx) => const RegisterPage(),
+                          ),
                         );
                       },
                       child: RichText(
